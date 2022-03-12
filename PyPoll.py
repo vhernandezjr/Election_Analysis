@@ -20,7 +20,7 @@ import os
 # Assign a variable to load a file from a path.
 file_to_load = os.path.join("Resources", "election_results.csv")
 # Assign a variable to save the file to a path.
-file_to_save = os.path.join("Analysis", "election_analysis.txt")
+file_to_save = os.path.join("Analysis", "election_results.txt")
 
 
 # Initalize a total vote counter.
@@ -62,6 +62,20 @@ with open(file_to_load) as election_data:
         # Add a vote to candidate's count.
         candidate_votes[candidate_name] += 1
 
+# print(f"{candidate_name}: {vote_percentage:.1f}% ({votes:,})\n")
+# print(winning_candidate_summary)
+# Save the results to our text file.
+with open(file_to_save, "w") as txt_file:
+    # After opening the file print the final vote count to the terminal.
+    election_results = (
+        f"\nElection Results\n"
+        f"-------------------------\n"
+        f"Total Votes: {total_votes:,}\n"
+        f"-------------------------\n")
+    print(election_results, end="")
+    # After printing the final vote count to the terminal save the final vote count to the text file.
+    txt_file.write(election_results)
+
     # Retrieve the votes for each candidate and get the percentages of votes.
     # Determine the percentage of votes for each candidate by looping through the counts.
     # Iterate through the candidate list.
@@ -71,42 +85,43 @@ with open(file_to_load) as election_data:
         # Calculate the percentage of votes.
         vote_percentage = float(votes) / float(total_votes) * 100
         # Challenge Formate : vote_percentage = "{:.2f}".format(vote_percentage)
-        # Print out each candidate's name, vote count, and percentage of # votes to the terminal.
-        print(f"{candidate_name}: {vote_percentage:.1f}% ({votes:,})\n")
+        # Tabulate each candidate's name, vote count, and percentage of # votes to the terminal.
+        candidate_results = (f"{candidate_name}: {vote_percentage:.1f}% ({votes:,})\n")
+        
+        # Print each candidate's voter count and percentage to the terminal.
+        print(candidate_results)
+        # Save the candidate results to our text file.
+        txt_file.write(candidate_results)
 
-        # Determine winning vote count and candidate
+
+        # Determine winning vote count and candidate.
         # Determine if the votes is greater than the winning count.
         if (votes > winning_count) and (vote_percentage > winning_percentage):
-            # If true then set winning_count = votes and winning_percent =
-            # vote_percentage.
+            # If true then set winning_count = votes and winning_percent = vote_percentage.
             winning_count = votes
             winning_percentage = vote_percentage
             # And, set the winning_candidate equal to the candidate's name.
             winning_candidate = candidate_name
 
-#  To do: print out the winning candidate, vote count and percentage to terminal. 
+    # Print out the winning candidate, vote count and percentage to terminal. 
     winning_candidate_summary = (
-    f"-------------------------\n"
-    f"Winner: {winning_candidate}\n"
-    f"Winning Vote Count: {winning_count:,}\n"
-    f"Winning Percentage: {winning_percentage:.1f}%\n"
-    f"-------------------------\n")
-print(winning_candidate_summary)      
+        f"-------------------------\n"
+        f"Winner: {winning_candidate}\n"
+        f"Winning Vote Count: {winning_count:,}\n"
+        f"Winning Percentage: {winning_percentage:.1f}%\n"
+        f"-------------------------\n")
+    print(winning_candidate_summary)      
         
 
-
+    # Save the winning candidate's results to the text file.
+    txt_file.write(winning_candidate_summary)
 
 # Print the total votes and candidate name.
-print("Total Votes =", total_votes)
-print("Candidate Names:", candidate_options)
+# print("Total Votes =", total_votes)
+# print("Candidate Names:", candidate_options)
 # Print the candidate vote dictionary.
-print("Candidate Total Votes :", candidate_votes)
+# print("Candidate Total Votes :", candidate_votes)
 
 
 
-# Using the with statement open the file as a text file.
-with open(file_to_save, "w") as txt_file:
-
-    # Write three counties to the file.
-     txt_file.write("Counties in the Election\n----------------\nArapahoe\nDenver\nJefferson")
 
